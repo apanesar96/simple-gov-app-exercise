@@ -1,5 +1,9 @@
 {
-  "subject": {},
+  "subject": {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "age": "15"
+  },
   "father": {},
   "mother": {}
 }

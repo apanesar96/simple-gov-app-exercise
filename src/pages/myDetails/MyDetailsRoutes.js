@@ -1,14 +1,12 @@
-import { MyDetails } from './MyDetails'
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch } from 'react-router-dom';
+import { MyDetails } from './MyDetails';
 
-const MyDetailsRoutes = () => {
-    return (
-        <Switch>
-            <Route path="/my-details">
-                <MyDetails />
-            </Route>
-        </Switch>
-    );
-}
+const MyDetailsRoutes = () => (
+  <Switch>
+    <Route path="/my-details">
+      <MyDetails />
+    </Route>
+  </Switch>
+);
 
-export { MyDetailsRoutes }
+export { MyDetailsRoutes };
