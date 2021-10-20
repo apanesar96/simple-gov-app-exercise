@@ -4,17 +4,19 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 import { MothersDetails } from './MothersDetails';
-import { fetchMotherDetails } from '../../service/getRequests';
+import { getSubjectDetails, postSubjectDetails} from '../../service/subjectService';
 
-jest.mock('../../service/getRequests');
+jest.mock('../../service/subjectService');
 jest.mock('axios');
 
 const renderPage = async () => render(<MothersDetails />);
 
 describe('MothersDetails', () => {
   it('should make an api request to the /mother endpoint', async () => {
-    await renderPage();
-    expect(fetchMotherDetails.mockImplementation()).toHaveBeenCalled();
+    await act(async () => {
+      await renderPage();
+    });
+    expect(getSubjectDetails.mockImplementation()).toHaveBeenCalled();
   });
 
   it('should render four empty input fields if no data added yet', async () => {
@@ -40,7 +42,9 @@ describe('MothersDetails', () => {
   });
 
   it('should be able to post and submit form details to the api', async () => {
-    await renderPage();
+    await act(async () => {
+      await renderPage();
+    });
 
     const nameInput = screen.getByLabelText('First Name');
     const lastNameInput = screen.getByLabelText('Last Name');
@@ -66,7 +70,7 @@ describe('MothersDetails', () => {
       await userEvent.click(button);
     });
 
-    expect(axios.post.mockImplementation()).toHaveBeenCalledWith('http://localhost:3004/mother', detailsPayload);
+    expect(postSubjectDetails.mockImplementation()).toHaveBeenCalledWith('mother', detailsPayload);
   });
 
   it('renders the page with a get request and displays the data in the given input elements', async () => {
@@ -81,9 +85,11 @@ describe('MothersDetails', () => {
       },
     };
 
-    fetchMotherDetails.mockImplementation(() => details);
+    getSubjectDetails.mockImplementation(() => details);
 
-    await renderPage();
+    await act(async () => {
+      await renderPage();
+    });
 
     const nameInput = screen.getByLabelText('First Name');
     const lastNameInput = screen.getByLabelText('Last Name');

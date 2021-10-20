@@ -4,7 +4,7 @@ import {
   Input, Fieldset, Label, LabelText,
   Page, Footer,
 } from 'govuk-react';
-import { fetchMotherDetails } from '../../service/getRequests';
+import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
 
 function MothersDetails() {
   const [firstName, setFirstName] = useState('');
@@ -14,7 +14,7 @@ function MothersDetails() {
 
   useEffect(() => {
     const getMothersDetails = async () => {
-      const res = await fetchMotherDetails();
+      const res = await getSubjectDetails('mother');
 
       if (res) {
         const {
@@ -36,10 +36,10 @@ function MothersDetails() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-
-    axios.post('http://localhost:3004/mother', {
-      firstName, lastName, age, maidenName,
-    });
+    postSubjectDetails('mother',
+      {
+        firstName, lastName, age, maidenName,
+      });
   };
 
   return (
