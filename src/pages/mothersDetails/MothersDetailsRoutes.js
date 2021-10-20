@@ -1,14 +1,12 @@
-import { MothersDetails } from './MothersDetails'
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch } from 'react-router-dom';
+import MothersDetails from './MothersDetails';
 
-const MothersDetailsRoutes = () => {
-    return (
-        <Switch>
-            <Route path="/mothers-details">
-                <MothersDetails />
-            </Route>
-        </Switch>
-    );
-}
+const MothersDetailsRoutes = () => (
+  <Switch>
+    <Route path="/mothers-details">
+      <MothersDetails />
+    </Route>
+  </Switch>
+);
 
-export { MothersDetailsRoutes }
+export { MothersDetailsRoutes };

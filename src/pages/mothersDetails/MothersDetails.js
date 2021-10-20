@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   Input, Fieldset, Label, LabelText,
   Page, Footer,
 } from 'govuk-react';
 import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
 
-function MothersDetails() {
+export default function MothersDetails() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
@@ -93,5 +92,3 @@ function MothersDetails() {
     </>
   );
 }
-
-export { MothersDetails };

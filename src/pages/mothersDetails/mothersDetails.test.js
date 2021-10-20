@@ -2,9 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import axios from 'axios';
-import { MothersDetails } from './MothersDetails';
-import { getSubjectDetails, postSubjectDetails} from '../../service/subjectService';
+import MothersDetails from './MothersDetails';
+import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
 
 jest.mock('../../service/subjectService');
 jest.mock('axios');
