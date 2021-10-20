@@ -1,14 +1,18 @@
-import { FathersDetails } from './FathersDetails'
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch } from 'react-router-dom';
+import { FathersDetails } from './FathersDetails';
 
-const FathersDetailsRoutes = () => {
-    return (
-        <Switch>
-            <Route path="/fathers-details">
-                <FathersDetails />
-            </Route>
-        </Switch>
-    );
-}
+export const fatherProps = {
+  subject: 'father',
+  detailsHeader: "Your fathers's details",
+  legend: 'Please enter his details',
+};
 
-export { FathersDetailsRoutes }
+const FathersDetailsRoutes = () => (
+  <Switch>
+    <Route path="/fathers-details">
+      <FathersDetails />
+    </Route>
+  </Switch>
+);
+
+export { FathersDetailsRoutes };

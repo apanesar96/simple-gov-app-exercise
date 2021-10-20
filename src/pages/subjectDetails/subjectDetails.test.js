@@ -4,28 +4,54 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import SubjectDetails from './SubjectDetails';
 import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
+import { motherProps } from '../mothersDetails/MothersDetailsRoutes';
+import { fatherProps } from '../fathersDetails/FathersDetailsRoutes';
+import { userProps } from '../myDetails/MyDetailsRoutes';
 
 jest.mock('../../service/subjectService');
 jest.mock('axios');
 
-const renderPage = async () => render(
-  <SubjectDetails
-    subject="mother"
-    detailsHeader="Your mother's details"
-    legend="Please enter her details"
-  />,
-);
+const subjects = [motherProps, fatherProps, userProps];
 
-describe('MothersDetails', () => {
-  it('should make an api request to the /mother endpoint', async () => {
-    await act(async () => {
-      await renderPage();
+const mother = {
+  attributes: motherProps,
+  keyValuePairs: {
+    'First Name': 'Mary',
+    'Last Name': 'Smith',
+    'Maiden Name': 'Jones',
+    Age: '50',
+  },
+  expectedPayload: {
+    firstName: 'Mary',
+    lastName: 'Smith',
+    maidenName: 'Jones',
+    age: '50',
+  },
+};
+
+const renderPage = async (props) => {
+  const { subject, detailsHeader, legend } = props;
+  render(
+    <SubjectDetails
+      subject={subject}
+      detailsHeader={detailsHeader}
+      legend={legend}
+    />,
+  );
+};
+
+describe('SubjectDetails', () => {
+  subjects.forEach(async (subject) => {
+    it('should make an api request to the right endpoint', async () => {
+      await act(async () => {
+        await renderPage(subject);
+      });
+      expect(getSubjectDetails.mockImplementation()).toHaveBeenCalledWith(subject.subject);
     });
-    expect(getSubjectDetails.mockImplementation()).toHaveBeenCalled();
   });
 
   it('should render four empty input fields if no data added yet', async () => {
-    await renderPage();
+    await renderPage(motherProps);
 
     const nameTitle = screen.getByText('First Name');
     const nameInput = screen.getByLabelText('First Name');
@@ -46,36 +72,30 @@ describe('MothersDetails', () => {
     expect(ageInput).toBeInTheDocument();
   });
 
-  it('should be able to post and submit form details to the api', async () => {
-    await act(async () => {
-      await renderPage();
+  [mother].forEach(async (object) => {
+    it('should be able to post and submit form details to the api', async () => {
+      const { attributes, expectedPayload } = object;
+
+      await act(async () => {
+        await renderPage(attributes);
+      });
+
+      const button = screen.getByTestId('submit-button');
+      const keys = Object.keys(object.keyValuePairs);
+
+      await act(async () => {
+        keys.forEach(async (key) => {
+          await userEvent.type(screen.getByLabelText(key), object.keyValuePairs[key]);
+        });
+      });
+
+      await act(async () => {
+        userEvent.click(button);
+      });
+
+      expect(postSubjectDetails.mockImplementation())
+        .toHaveBeenCalledWith(attributes.subject, expectedPayload);
     });
-
-    const nameInput = screen.getByLabelText('First Name');
-    const lastNameInput = screen.getByLabelText('Last Name');
-    const maidenNameInput = screen.getByLabelText('Maiden Name');
-    const ageInput = screen.getByLabelText('Age');
-    const button = screen.getByTestId('submit-button');
-
-    const firstName = 'Jane';
-    const lastName = 'Doe';
-    const maidenName = 'Smith';
-    const age = '40';
-
-    const detailsPayload = {
-      firstName, lastName, maidenName, age,
-    };
-
-    await act(async () => {
-      await userEvent.type(nameInput, firstName);
-      await userEvent.type(lastNameInput, lastName);
-      await userEvent.type(maidenNameInput, maidenName);
-      await userEvent.type(ageInput, age);
-
-      await userEvent.click(button);
-    });
-
-    expect(postSubjectDetails.mockImplementation()).toHaveBeenCalledWith('mother', detailsPayload);
   });
 
   it('renders the page with a get request and displays the data in the given input elements', async () => {
@@ -93,7 +113,7 @@ describe('MothersDetails', () => {
     getSubjectDetails.mockImplementation(() => details);
 
     await act(async () => {
-      await renderPage();
+      await renderPage(motherProps);
     });
 
     const nameInput = screen.getByLabelText('First Name');

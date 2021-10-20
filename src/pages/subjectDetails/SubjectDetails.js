@@ -5,7 +5,7 @@ import {
 import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
 import { TextInput, Form } from '../../components';
 
-export default function MothersDetails({ subject, detailsHeader, legend }) {
+export default function SubjectDetails({ subject, detailsHeader, legend }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
