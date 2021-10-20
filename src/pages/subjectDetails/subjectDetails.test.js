@@ -2,13 +2,19 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import MothersDetails from './MothersDetails';
+import SubjectDetails from './SubjectDetails';
 import { getSubjectDetails, postSubjectDetails } from '../../service/subjectService';
 
 jest.mock('../../service/subjectService');
 jest.mock('axios');
 
-const renderPage = async () => render(<MothersDetails />);
+const renderPage = async () => render(
+  <SubjectDetails
+    subject="mother"
+    detailsHeader="Your mother's details"
+    legend="Please enter her details"
+  />,
+);
 
 describe('MothersDetails', () => {
   it('should make an api request to the /mother endpoint', async () => {
