@@ -1,5 +1,6 @@
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { MyDetails } from './MyDetails';
+import SubjectDetails from '../subjectDetails/SubjectDetails';
 
 export const userProps = {
   subject: 'subject',
@@ -7,10 +8,16 @@ export const userProps = {
   legend: 'Please enter your details',
 };
 
+const { subject, detailsHeader, legend } = userProps;
+
 const MyDetailsRoutes = () => (
   <Switch>
     <Route path="/my-details">
-      <MyDetails />
+      <SubjectDetails
+        subject={subject}
+        detailsHeader={detailsHeader}
+        legend={legend}
+      />
     </Route>
   </Switch>
 );

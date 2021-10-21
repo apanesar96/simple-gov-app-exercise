@@ -8,14 +8,16 @@ export const motherProps = {
   legend: 'Please enter her details',
 };
 
+const { subject, detailsHeader, legend } = motherProps;
+
 export default function MothersDetailsRoutes() {
   return (
     <Switch>
-      <Route path="/mothers-details">
+      <Route path={`/${subject}-details`}>
         <SubjectDetails
-          subject={motherProps.subject}
-          detailsHeader={motherProps.detailsHeader}
-          legend={motherProps.legend}
+          subject={subject}
+          detailsHeader={detailsHeader}
+          legend={legend}
         />
       </Route>
     </Switch>

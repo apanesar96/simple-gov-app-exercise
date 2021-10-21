@@ -11,7 +11,7 @@ export default function InputField({
         <LabelText>
           {title}
         </LabelText>
-        <Input name={name} defaultValue={value} onChange={(e) => setValue(e.target.value)} />
+        <Input name={name} defaultValue={value} onChange={(e) => setValue(e.target.value)} required/>
       </Label>
     </div>
   );
