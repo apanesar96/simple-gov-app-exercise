@@ -35,10 +35,15 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    postSubjectDetails(subject,
-      {
-        firstName, lastName, age, maidenName,
-      });
+    const payload = {
+      firstName,
+      lastName,
+      age,
+    };
+
+    if (subject === 'mother') payload.maidenName = maidenName;
+
+    postSubjectDetails(subject, payload);
   };
 
   return (

@@ -11,7 +11,7 @@ import { userProps } from '../myDetails/MyDetailsRoutes';
 jest.mock('../../service/subjectService');
 jest.mock('axios');
 
-const subjects = [motherProps, fatherProps, userProps];
+const subjectProps = [motherProps, fatherProps, userProps];
 
 const mother = {
   attributes: motherProps,
@@ -29,6 +29,36 @@ const mother = {
   },
 };
 
+const father = {
+  attributes: fatherProps,
+  keyValuePairs: {
+    'First Name': 'Michael',
+    'Last Name': 'Jackson',
+    Age: '50',
+  },
+  expectedPayload: {
+    firstName: 'Michael',
+    lastName: 'Jackson',
+    age: '50',
+  },
+};
+
+const myDetails = {
+  attributes: userProps,
+  keyValuePairs: {
+    'First Name': 'Alex',
+    'Last Name': 'Smith',
+    Age: '20',
+  },
+  expectedPayload: {
+    firstName: 'Alex',
+    lastName: 'Smith',
+    age: '20',
+  },
+};
+
+const subjectDetails = [mother, father, myDetails];
+
 const renderPage = async (props) => {
   const { subject, detailsHeader, legend } = props;
   render(
@@ -41,7 +71,7 @@ const renderPage = async (props) => {
 };
 
 describe('SubjectDetails', () => {
-  subjects.forEach(async (subject) => {
+  subjectProps.forEach(async (subject) => {
     it('should make an api request to the right endpoint', async () => {
       await act(async () => {
         await renderPage(subject);
@@ -72,7 +102,7 @@ describe('SubjectDetails', () => {
     expect(ageInput).toBeInTheDocument();
   });
 
-  [mother].forEach(async (object) => {
+  subjectDetails.forEach(async (object) => {
     it('should be able to post and submit form details to the api', async () => {
       const { attributes, expectedPayload } = object;
 
