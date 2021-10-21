@@ -10,6 +10,7 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
   const [maidenName, setMaidenName] = useState('');
+  const [firstNameErrorMessage, setFirstNameErrorMessage] = useState('');
 
   useEffect(() => {
     const getMothersDetails = async () => {
@@ -35,6 +36,9 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
 
   const onSubmit = (event) => {
     event.preventDefault();
+
+    if (firstName === "") {setFirstNameErrorMessage("Your first name cant be blank")};
+
     const payload = {
       firstName,
       lastName,
@@ -52,7 +56,7 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
         <div className="wrapper">
           <h2>{detailsHeader}</h2>
           <Form legend={legend} onSubmit={onSubmit}>
-            <TextInput title="First Name" name="firstName" value={firstName} setValue={setFirstName} />
+            <TextInput title="First Name" name="firstName" value={firstName} setValue={setFirstName} errorText={firstNameErrorMessage}/>
             <TextInput title="Last Name" name="lastName" value={lastName} setValue={setLastName} />
             {subject === 'mother' && (
             <TextInput title="Maiden Name" name="maidenName" value={maidenName} setValue={setMaidenName} />

@@ -1,13 +1,16 @@
 import React from 'react';
 
-import { Label, LabelText, Input } from 'govuk-react';
+import { Label, LabelText, Input, ErrorText } from 'govuk-react';
 
-export default function InputField({
-  title, name, value, setValue,
+export default function TextInput({
+  title, name, value, setValue, errorText
 }) {
   return (
     <div className="form-group">
       <Label>
+        {errorText && (
+          <ErrorText>{errorText}</ErrorText>
+        )}
         <LabelText>
           {title}
         </LabelText>

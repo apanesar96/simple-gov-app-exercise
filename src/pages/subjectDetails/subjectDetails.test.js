@@ -156,4 +156,24 @@ describe('SubjectDetails', () => {
     expect(maidenNameInput.value).toBe(maidenName);
     expect(ageInput.value).toBe(age);
   });
+
+  it('should render the correct error feddback message when submitting a form with an empty field', async() => {
+    await act(async () => {
+      await renderPage(fatherProps);
+    });
+
+    await act(async () => {
+      await userEvent.type(screen.getByLabelText("First Name"), "");
+      await userEvent.type(screen.getByLabelText("Last Name"), "Smith");
+      await userEvent.type(screen.getByLabelText("Age"), "40");
+    });
+
+    const button = screen.getByTestId('submit-button');
+
+    await act(async () => {
+      userEvent.click(button);
+    });
+
+    expect(screen.getByText("Your first name cant be blank")).toBeInTheDocument();
+  })
 });

@@ -4,25 +4,26 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TextInput, Form } from '.';
 
-const renderPage = async (props) => {
+const renderPage = async (title, inputName) => {
   render(
-    <Form>
-      <TextInput title="First Name" name="firstName" value="" />
-    </Form>,
+      <TextInput title={title} name={inputName} value="" />
   );
 };
 
 describe('TextInput validation', () => {
-  it('should prompt user to fill in empty fields', async () => {
-    await act(async () => {
-      await renderPage();
-    });
+  it('should create an input with a label', async () => {
+    await renderPage("First Name","firstName" );
+    
+    const input = screen.getByLabelText("First Name");
+    expect(screen.getByText('First Name')).toBeInTheDocument();
+    expect(input).toBeInTheDocument();
+  });
 
-    const button = screen.getByTestId('submit-button');
-    const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => 'From cannot be empty');
-    await act(async () => {
-      userEvent.click(button);
-    });
-    expect(alertMock).toHaveBeenCalledTimes(1);
+  it('should show error text if an error has occured', async () => {
+    await render(
+      <TextInput title={"First Name"} name="firstName" value="" errorText="Your first name cant be blank" />
+  );
+    
+    expect(screen.getByText("Your first name cant be blank")).toBeInTheDocument();
   });
 });
