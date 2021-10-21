@@ -164,7 +164,7 @@ describe('SubjectDetails', () => {
 
     await act(async () => {
       await userEvent.type(screen.getByLabelText("First Name"), "");
-      await userEvent.type(screen.getByLabelText("Last Name"), "Smith");
+      await userEvent.type(screen.getByLabelText("Last Name"), "");
       await userEvent.type(screen.getByLabelText("Age"), "40");
     });
 
@@ -175,5 +175,7 @@ describe('SubjectDetails', () => {
     });
 
     expect(screen.getByText("Your first name cant be blank")).toBeInTheDocument();
+    expect(screen.getByText("Your last name cant be blank")).toBeInTheDocument();
+    expect(postSubjectDetails.mockImplementation()).toHaveBeenCalledTimes(0);
   })
 });
