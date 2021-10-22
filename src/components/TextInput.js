@@ -1,9 +1,11 @@
-import React from 'react';
+import { React, useState } from 'react';
 
-import { Label, LabelText, Input, ErrorText } from 'govuk-react';
+import {
+  Label, LabelText, Input, ErrorText,
+} from 'govuk-react';
 
 export default function TextInput({
-  title, name, value, setValue, errorText
+  title, name, value, setValue, errorText,
 }) {
   return (
     <div className="form-group">
@@ -14,7 +16,7 @@ export default function TextInput({
         <LabelText>
           {title}
         </LabelText>
-        <Input name={name} defaultValue={value} onChange={(e) => setValue(e.target.value)} required/>
+        <Input name={name} defaultValue={value} onKeyUp={(e) => { setValue(e.target.value); }} />
       </Label>
     </div>
   );

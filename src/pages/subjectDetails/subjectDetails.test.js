@@ -157,15 +157,14 @@ describe('SubjectDetails', () => {
     expect(ageInput.value).toBe(age);
   });
 
-  it('should render the correct error feddback message when submitting a form with an empty field', async() => {
+  it('should render the correct error feddback message when submitting a form with an empty field', async () => {
     await act(async () => {
       await renderPage(fatherProps);
     });
 
     await act(async () => {
-      await userEvent.type(screen.getByLabelText("First Name"), "");
-      await userEvent.type(screen.getByLabelText("Last Name"), "");
-      await userEvent.type(screen.getByLabelText("Age"), "40");
+      //
+      await userEvent.type(screen.getByLabelText('Age'), '40');
     });
 
     const button = screen.getByTestId('submit-button');
@@ -174,8 +173,22 @@ describe('SubjectDetails', () => {
       userEvent.click(button);
     });
 
-    expect(screen.getByText("Your first name cant be blank")).toBeInTheDocument();
-    expect(screen.getByText("Your last name cant be blank")).toBeInTheDocument();
+    expect(screen.getByText('Your first name cant be blank')).toBeInTheDocument();
+    expect(screen.getByText('Your last name cant be blank')).toBeInTheDocument();
     expect(postSubjectDetails.mockImplementation()).toHaveBeenCalledTimes(0);
-  })
+  });
+
+  it('it should not submit to the endpoint when the form is empty', async () => {
+    await act(async () => {
+      await renderPage(fatherProps);
+    });
+
+    const button = screen.getByTestId('submit-button');
+
+    await act(async () => {
+      userEvent.click(button);
+    });
+
+    expect(postSubjectDetails.mockImplementation()).toHaveBeenCalledTimes(0);
+  });
 });

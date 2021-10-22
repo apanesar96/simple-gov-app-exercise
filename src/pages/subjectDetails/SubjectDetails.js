@@ -14,9 +14,9 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
   const [lastNameErrorMessage, setLastNameErrorMessage] = useState('');
   const [maidenNameErrorMessage, setMaidenNameErrorMessage] = useState('');
   const [ageErrorMessage, setAgeErrorMessage] = useState('');
-  const errorMessages2 = [];
 
   useEffect(() => {
+    setMaidenName('');
     const getMothersDetails = async () => {
       const res = await getSubjectDetails(subject);
 
@@ -41,37 +41,43 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    console.log("onsbumitfirstname", firstName);
     const payload = {
       firstName,
       lastName,
       age,
     };
 
-    if (firstName === '') {
-      setFirstNameErrorMessage("Your first name cant be blank")
-    errorMessages2.push(firstNameErrorMessage)};
-    if (lastName === "") {setLastNameErrorMessage("Your last name cant be blank")};
-    if (maidenName === "") {setMaidenNameErrorMessage("Your maiden name cant be blank")};
-    if (age === "") {setAgeErrorMessage("Your age cant be blank")};
+    console.log('firstName:', firstName);
+    console.log('!firstName:', !firstName);
 
-    const errorMessages = [firstNameErrorMessage, lastNameErrorMessage, maidenNameErrorMessage, ageErrorMessage];
-    const isEmpty = element => element === "";
+    if (!firstName) {
+      console.log('WE ARE IN HERE');
+      setFirstNameErrorMessage('Your first name cant be blank');
+    } else {
+      setFirstNameErrorMessage('');
+    }
+    if (!lastName) {
+      setLastNameErrorMessage('Your last name cant be blank');
+    } else {
+      setLastNameErrorMessage('');
+    }
+    if (!maidenName && subject === 'mother') {
+      setMaidenNameErrorMessage('Your maiden name cant be blank');
+    } else {
+      setMaidenNameErrorMessage('');
+    }
+    if (!age) {
+      setAgeErrorMessage('Your age cant be blank');
+    } else {
+      setAgeErrorMessage('');
+    }
 
-    console.log(errorMessages);
-    
-  
-    console.log(errorMessages2);
     if (subject === 'mother') payload.maidenName = maidenName;
-    
-    // Object.keys(payload).forEach((key) => (payload[key] === '' ? setErrorMessages({ ...errorMessages, [key]: exceptions[key] }) : key));
 
-    if(errorMessages2.every(isEmpty)) {
+    if (firstName && lastName && age) {
       postSubjectDetails(subject, payload);
     }
   };
-  
-  
 
   return (
     <>
@@ -79,7 +85,7 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
         <div className="wrapper">
           <h2>{detailsHeader}</h2>
           <Form legend={legend} onSubmit={onSubmit}>
-            <TextInput title="First Name" name="firstName" value={firstName} setValue={setFirstName} errorText={firstNameErrorMessage}/>
+            <TextInput title="First Name" name="firstName" value={firstName} setValue={setFirstName} errorText={firstNameErrorMessage} />
             <TextInput title="Last Name" name="lastName" value={lastName} setValue={setLastName} errorText={lastNameErrorMessage} />
             {subject === 'mother' && (
             <TextInput title="Maiden Name" name="maidenName" value={maidenName} setValue={setMaidenName} errorText={maidenNameErrorMessage} />

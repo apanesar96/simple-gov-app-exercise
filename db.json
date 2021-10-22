@@ -1,10 +1,14 @@
 {
   "subject": {
-    "firstName": "",
+    "firstName": "Aman",
     "lastName": "Panesar",
     "age": "15"
   },
-  "father": {},
+  "father": {
+    "firstName": "Aman",
+    "lastName": "Panesar",
+    "age": "50"
+  },
   "mother": {
     "firstName": "Jane",
     "lastName": "Smith",
