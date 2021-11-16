@@ -26,12 +26,26 @@ provider:
     SUBJECT_TABLE: ${self:custom.subjectTableName}
 
 functions:
-  api:
-    handler: handler.handler
-    events:
-      - httpApi: '*'
+  # api:
+  #   handler: handler.handler
+  #   events:
+  #     - httpApi: '*'
       # - http: 
       #   cors: true
+  get:
+    handler: getSubjectData.getSubjectData
+    events:
+      - http:
+          path: /{title}
+          method: get
+          cors: true
+  post:
+    handler: postSubjectData.saveSubjectData
+    events:
+      - http:
+          path: /{title}
+          method: post
+          cors: true
 
 resources:
   Resources:
