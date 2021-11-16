@@ -3,8 +3,6 @@ frameworkVersion: '2 || 3'
 
 custom:
   subjectTableName: 'subject-gov-table-${sls:stage}'
-  # motherTableName: 'mother-table-${sls:stage}'
-  # fatherTableName: 'father-table-${sls:stage}'
   
 
 provider:
@@ -26,8 +24,6 @@ provider:
             - Fn::GetAtt: [ SubjectTable, Arn ]
   environment:
     SUBJECT_TABLE: ${self:custom.subjectTableName}
-    # MOTHER_TABLE: ${self:custom.motherTableName}
-    # FATHER_TABLE: ${self:custom.fatherTableName}
 
 functions:
   api:
@@ -48,14 +44,3 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.subjectTableName}
-    # MotherTable:
-    #   Type: AWS::DynamoDB::Table
-    #   Properties:
-    #     AttributeDefinitions:
-    #       - AttributeName: userId
-    #         AttributeType: S
-    #     KeySchema:
-    #       - AttributeName: userId
-    #         KeyType: HASH
-    #     BillingMode: PAY_PER_REQUEST
-    #     TableName: ${self:custom.motherTableName}    
