@@ -9,11 +9,12 @@ const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
 app.use(express.json());
 
-app.get('/subject', async (req, res) => {
+app.get('/:subject', async (req, res) => {
+  const { params: { subject } } = req;
   const params = {
     TableName: SUBJECT_TABLE,
     Key: {
-      userId: '1',
+      title: subject,
     },
   };
 
@@ -21,15 +22,15 @@ app.get('/subject', async (req, res) => {
     const { Item } = await dynamoDbClient.get(params).promise();
     if (Item) {
       const {
-        userId, firstName, lastName, age,
+        title, firstName, lastName, age, maidenName,
       } = Item;
       res.json({
-        userId, firstName, lastName, age,
+        title, firstName, lastName, age, maidenName,
       });
     } else {
       res
         .status(404)
-        .json({ error: 'Could not find user with provided "userId"' });
+        .json({ error: 'Could not find user with provided "title"' });
     }
   } catch (error) {
     console.log(error);
@@ -37,9 +38,10 @@ app.get('/subject', async (req, res) => {
   }
 });
 
-app.post('/subject', async (req, res) => {
+app.post('/:subject', async (req, res) => {
+  const { params: { subject } } = req;
   const {
-    firstName, lastname, age,
+    firstName, lastName, age, maidenName,
   } = req.body;
   if (typeof firstName !== 'string') {
     res.status(400).json({ error: '"name" must be a string' });
@@ -48,108 +50,23 @@ app.post('/subject', async (req, res) => {
   const params = {
     TableName: SUBJECT_TABLE,
     Item: {
-      userId: '1',
+      title: subject,
       firstName,
-      lastname,
+      lastName,
       age,
+      maidenName,
     },
   };
 
   try {
     await dynamoDbClient.put(params).promise();
     res.json({
-      userId: '1', firstName, lastname, age,
+      title: subject, firstName, lastName, age, maidenName,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Could not create user' });
   }
 });
-
-app.get('/mother', async (req, res) => {
-  const params = {
-    TableName: SUBJECT_TABLE,
-    Key: {
-      userId: '1',
-    },
-  };
-
-  try {
-    const { Item } = await dynamoDbClient.get(params).promise();
-    console.dir(Item);
-    if (Item) {
-      const {
-        mother: {
-          firstName, lastName, maidenName, age,
-        },
-      } = Item;
-      res.json({
-        firstName, lastName, maidenName, age,
-      });
-    } else {
-      res
-        .status(404)
-        .json({ error: 'Could not find user with provided "userId"' });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Could not retreive user' });
-  }
-});
-
-app.post('/mother', async (req, res) => {
-  const {
-    firstName, lastname, maidenName, age,
-  } = req.body;
-  if (typeof firstName !== 'string') {
-    res.status(400).json({ error: '"name" must be a string' });
-  }
-
-  const params = {
-    TableName: SUBJECT_TABLE,
-    Key: {
-      userId: '1',
-    },
-    UpdateExpression: 'set mother = :m',
-    ExpressionAttributeValues: {
-      ':m': {
-        firstName,
-        lastname,
-        maidenName,
-        age,
-      },
-    },
-    ReturnValues: 'UPDATED_NEW',
-  };
-
-  // const params = {
-  //   TableName: SUBJECT_TABLE,
-  //   Key: {
-  //     userId: '1',
-  //   },
-  //   Item: {
-  //     mother: {
-  //       firstName,
-  //       lastname,
-  //       maidenName,
-  //       age,
-  //     },
-  //   },
-  // };
-
-  try {
-    await dynamoDbClient.update(params).promise();
-    res.json({
-      firstName, lastname, maidenName, age,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Could not create Mother user' });
-  }
-});
-
-// app.use((req, res, next) => res.status(404).json({
-//   error: 'Not Found',
-// }));
 
 module.exports.handler = serverless(app);

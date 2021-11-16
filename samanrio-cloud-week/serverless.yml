@@ -2,7 +2,7 @@ service: samanrio-cloud-week
 frameworkVersion: '2 || 3'
 
 custom:
-  subjectTableName: 'subject-table-${sls:stage}'
+  subjectTableName: 'subject-gov-table-${sls:stage}'
   # motherTableName: 'mother-table-${sls:stage}'
   # fatherTableName: 'father-table-${sls:stage}'
   
@@ -41,10 +41,10 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: title
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: title
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:custom.subjectTableName}
