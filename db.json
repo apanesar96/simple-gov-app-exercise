@@ -5,9 +5,9 @@
     "age": "15"
   },
   "father": {
-    "firstName": "Aman",
-    "lastName": "Panesar",
-    "age": "50"
+    "firstName": "",
+    "lastName": "",
+    "age": ""
   },
   "mother": {
     "firstName": "Jane",

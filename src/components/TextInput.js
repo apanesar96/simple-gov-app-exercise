@@ -5,8 +5,13 @@ import {
 } from 'govuk-react';
 
 export default function TextInput({
-  title, name, value, setValue, errorText,
+  title, name, value, setValue, errorText, onTextErrorChange,
 }) {
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+    onTextErrorChange('');
+  };
+
   return (
     <div className="form-group">
       <Label>
@@ -16,7 +21,7 @@ export default function TextInput({
         <LabelText>
           {title}
         </LabelText>
-        <Input name={name} defaultValue={value} onKeyUp={(e) => { setValue(e.target.value); }} />
+        <Input name={name} defaultValue={value} onKeyUp={handleInputChange} />
       </Label>
     </div>
   );

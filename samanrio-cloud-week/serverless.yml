@@ -1,0 +1,61 @@
+service: samanrio-cloud-week
+frameworkVersion: '2 || 3'
+
+custom:
+  subjectTableName: 'subject-table-${sls:stage}'
+  # motherTableName: 'mother-table-${sls:stage}'
+  # fatherTableName: 'father-table-${sls:stage}'
+  
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ SubjectTable, Arn ]
+  environment:
+    SUBJECT_TABLE: ${self:custom.subjectTableName}
+    # MOTHER_TABLE: ${self:custom.motherTableName}
+    # FATHER_TABLE: ${self:custom.fatherTableName}
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: '*'
+
+resources:
+  Resources:
+    SubjectTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.subjectTableName}
+    # MotherTable:
+    #   Type: AWS::DynamoDB::Table
+    #   Properties:
+    #     AttributeDefinitions:
+    #       - AttributeName: userId
+    #         AttributeType: S
+    #     KeySchema:
+    #       - AttributeName: userId
+    #         KeyType: HASH
+    #     BillingMode: PAY_PER_REQUEST
+    #     TableName: ${self:custom.motherTableName}    

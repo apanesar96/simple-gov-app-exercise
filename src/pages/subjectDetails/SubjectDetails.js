@@ -38,6 +38,9 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
     getMothersDetails();
   }, []);
 
+  function handleInputValidation() {
+
+  }
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -47,8 +50,7 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
       age,
     };
 
-    console.log('firstName:', firstName);
-    console.log('!firstName:', !firstName);
+    handleInputValidation();
 
     if (!firstName) {
       console.log('WE ARE IN HERE');
@@ -85,12 +87,40 @@ export default function SubjectDetails({ subject, detailsHeader, legend }) {
         <div className="wrapper">
           <h2>{detailsHeader}</h2>
           <Form legend={legend} onSubmit={onSubmit}>
-            <TextInput title="First Name" name="firstName" value={firstName} setValue={setFirstName} errorText={firstNameErrorMessage} />
-            <TextInput title="Last Name" name="lastName" value={lastName} setValue={setLastName} errorText={lastNameErrorMessage} />
+            <TextInput
+              title="First Name"
+              name="firstName"
+              value={firstName}
+              setValue={setFirstName}
+              errorText={firstNameErrorMessage}
+              onTextErrorChange={setFirstNameErrorMessage}
+            />
+            <TextInput
+              title="Last Name"
+              name="lastName"
+              value={lastName}
+              setValue={setLastName}
+              errorText={lastNameErrorMessage}
+              onTextErrorChange={setLastNameErrorMessage}
+            />
             {subject === 'mother' && (
-            <TextInput title="Maiden Name" name="maidenName" value={maidenName} setValue={setMaidenName} errorText={maidenNameErrorMessage} />
+            <TextInput
+              title="Maiden Name"
+              name="maidenName"
+              value={maidenName}
+              setValue={setMaidenName}
+              errorText={maidenNameErrorMessage}
+              onTextErrorChange={setMaidenNameErrorMessage}
+            />
             )}
-            <TextInput title="Age" name="age" value={age} setValue={setAge} errorText={ageErrorMessage} />
+            <TextInput
+              title="Age"
+              name="age"
+              value={age}
+              setValue={setAge}
+              errorText={ageErrorMessage}
+              onTextErrorChange={setAgeErrorMessage}
+            />
           </Form>
         </div>
       </Page>
