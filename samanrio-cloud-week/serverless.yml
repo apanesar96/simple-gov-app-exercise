@@ -30,6 +30,8 @@ functions:
     handler: handler.handler
     events:
       - httpApi: '*'
+      # - http: 
+      #   cors: true
 
 resources:
   Resources:

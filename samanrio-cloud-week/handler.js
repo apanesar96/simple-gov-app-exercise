@@ -1,3 +1,4 @@
+const cors = require('cors');
 const AWS = require('aws-sdk');
 const express = require('express');
 const serverless = require('serverless-http');
@@ -7,6 +8,7 @@ const app = express();
 const { SUBJECT_TABLE } = process.env;
 const dynamoDbClient = new AWS.DynamoDB.DocumentClient();
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/:subject', async (req, res) => {
